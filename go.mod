@@ -5,6 +5,7 @@ go 1.22.0
 require (
 	github.com/aead/chacha20poly1305 v0.0.0-20201124145622-1a5aba2a8b29
 	github.com/google/uuid v1.6.0
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1
 	github.com/o1egl/paseto v1.0.0
 	github.com/rs/zerolog v1.32.0
 	google.golang.org/grpc v1.62.1
