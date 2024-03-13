@@ -2,6 +2,7 @@ package token
 
 import (
 	"context"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -26,7 +27,8 @@ func (m *maker) TokenExtractorUnaryInterceptor() grpc.UnaryServerInterceptor {
 			return nil, status.Errorf(codes.Unauthenticated, "authorization token is not provided")
 		}
 
-		accessToken := values[0]
+		accessToken := strings.TrimPrefix(values[0], "Bearer ")
+
 		payload, err := m.VerifyToken(accessToken)
 		if err != nil {
 			return nil, status.Errorf(codes.Unauthenticated, "authorization token is invalid")
