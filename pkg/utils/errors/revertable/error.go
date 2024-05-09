@@ -5,6 +5,8 @@ type RevertableError struct {
 	reason  string
 }
 
+var _ error = (*RevertableError)(nil)
+
 func (r *RevertableError) Error() string {
 	return "revertable error: " + r.baseErr.Error()
 }
@@ -17,7 +19,7 @@ func (r *RevertableError) Unwrap() error {
 	return r.baseErr
 }
 
-func NewRevertable(err error, reason string) error {
+func NewRevertable(err error, reason string) *RevertableError {
 	return &RevertableError{
 		baseErr: err,
 		reason:  reason,
