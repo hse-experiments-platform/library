@@ -38,3 +38,17 @@ func (m *maker) TokenExtractorUnaryInterceptor() grpc.UnaryServerInterceptor {
 		return handler(ctx, req)
 	}
 }
+
+func (m *maker) TransferToAnotherContext(src, dst context.Context) (context.Context, error) {
+	md, ok := metadata.FromIncomingContext(src)
+	if !ok {
+		return nil, status.Errorf(codes.Unauthenticated, "metadata is not provided")
+	}
+
+	values := md["authorization"]
+	if len(values) == 0 {
+		return nil, status.Errorf(codes.Unauthenticated, "authorization token is not provided")
+	}
+
+	return metadata.AppendToOutgoingContext(dst, "authorization", values[0]), nil
+}
